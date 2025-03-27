@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
@@ -9,13 +8,15 @@ export default function GamesPage() {
   const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
-    axios
-      .get("/api/games")
-      .then((res) => setGames(res.data))
-      .catch((err) => console.error(err));
+    fetch("/data/games.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setGames(data);
+      })
+      .catch((err) => console.error("Erreur lors de la récupération des données :", err));
   }, []);
 
-    const genres = Array.from(new Set(games.map((game) => game.genre))).sort();
+  const genres = Array.from(new Set(games.map((game) => game.genre))).sort();
 
   const filteredGames = games.filter(
     (game) =>
@@ -26,18 +27,18 @@ export default function GamesPage() {
   );
 
   return (
-    <div className="container mx-auto p-6 flex">
-      <aside className="w-1/4 p-4 bg-zinc-800 text-white rounded-lg">
-        <h2 className="text-xl font-bold mb-4">Rechercher un jeu</h2>
+    <div className="container mx-auto p-6">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 mb-6">
         <input
           type="text"
-          placeholder="Nom ou studio ..."
-          className="w-full p-2 mb-3 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          placeholder="Rechercher par nom ou studio..."
+          className="w-full sm:w-1/2 p-2.5 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+
         <select
-          className="w-full p-2 mb-3 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full sm:w-1/2 p-3 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -48,9 +49,9 @@ export default function GamesPage() {
             </option>
           ))}
         </select>
-      </aside>
+      </div>
 
-      <div className="w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ml-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredGames.length === 0 ? (
           <div className="col-span-3 text-center text-xl text-gray-400">
             Aucun jeu trouvé...
@@ -64,7 +65,10 @@ export default function GamesPage() {
                 className="w-full h-48 object-cover rounded-md"
               />
               <div className="mt-4">
-                <h2 className="text-lg font-semibold">{game.title}</h2>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-semibold">{game.title}</h2>
+                  <p className="text-lg font-bold text-green-400">{game.price}</p>
+                </div>
                 <p className="text-sm text-orange-500">{game.genre}</p>
                 {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
                 <p className="text-sm text-gray-500">{game.short_description}</p>
