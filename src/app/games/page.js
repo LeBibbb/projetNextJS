@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useState } from "react";
 
 export default function GamesPage() {
@@ -32,13 +34,13 @@ export default function GamesPage() {
         <input
           type="text"
           placeholder="Rechercher par nom ou studio..."
-          className="w-full sm:w-1/2 p-2.5 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full sm:w-1/2 p-2.5 mt-15 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         <select
-          className="w-full sm:w-1/2 p-3 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full sm:w-1/2 p-3 mt-15 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -58,7 +60,14 @@ export default function GamesPage() {
           </div>
         ) : (
           filteredGames.map((game) => (
+            <Link 
+                  key={game.id} 
+                  href={`/games/${game.id}`} 
+                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
+                >
+            
             <div key={game.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg">
+              
               <img
                 src={game.thumbnail}
                 alt={game.title}
@@ -74,6 +83,7 @@ export default function GamesPage() {
                 <p className="text-sm text-gray-500">{game.short_description}</p>
               </div>
             </div>
+            </Link>
           ))
         )}
       </div>

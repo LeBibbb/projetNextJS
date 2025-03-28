@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -18,13 +18,12 @@ export default function Home() {
       .then((data) => {
         const shuffled = data.sort(() => 0.5 - Math.random());
         setGames(shuffled.slice(0, 5));
-
         const bestSellersData = data
-          .filter((game) => ["Valorant", "League of Legends", "Call Of Duty: Warzone"].includes(game.title))
+          .filter((game) =>
+            ["Valorant", "League of Legends", "Call Of Duty: Warzone"].includes(game.title)
+          )
           .slice(0, 3);
         setBestSellers(bestSellersData);
-
-        // Filtrer les jeux à moins de 15 euros
         const cheapGamesData = data.filter((game) => parseFloat(game.price.replace('€', '').trim()) < 15);
         const randomCheapGames = cheapGamesData.sort(() => 0.5 - Math.random()).slice(0, 3);
         setCheapGames(randomCheapGames);
@@ -51,20 +50,22 @@ export default function Home() {
         ) : (
           games.map((game) => (
             <SwiperSlide key={game.id} className="relative">
-              <img
-                src={game.thumbnail}
-                alt={game.title}
-                className="w-full h-full object-cover rounded-lg"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-zinc-800 bg-opacity-50 p-5 text-white">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-bold">{game.title}</h2>
-                    <p className="text-sm">{game.genre}</p>
+              <Link href={`/games/${game.id}`} className="block w-full h-full">
+                <img
+                  src={game.thumbnail}
+                  alt={game.title}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-zinc-800 bg-opacity-50 p-5 text-white">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-xl font-bold">{game.title}</h2>
+                      <p className="text-sm">{game.genre}</p>
+                    </div>
+                    <p className="text-lg font-bold text-green-400">{game.price}</p>
                   </div>
-                  <p className="text-lg font-bold text-green-400">{game.price}</p>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))
         )}
@@ -80,7 +81,11 @@ export default function Home() {
               </div>
             ) : (
               bestSellers.map((game) => (
-                <div key={game.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
+                <Link 
+                  key={game.id} 
+                  href={`/games/${game.id}`} 
+                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
+                >
                   <img
                     src={game.thumbnail}
                     alt={game.title}
@@ -95,7 +100,7 @@ export default function Home() {
                     {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
                     <p className="text-sm text-gray-500">{game.short_description}</p>
                   </div>
-                </div>
+                </Link>
               ))
             )}
           </div>
@@ -112,7 +117,11 @@ export default function Home() {
               </div>
             ) : (
               cheapGames.map((game) => (
-                <div key={game.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
+                <Link 
+                  key={game.id} 
+                  href={`/games/${game.id}`} 
+                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
+                >
                   <img
                     src={game.thumbnail}
                     alt={game.title}
@@ -127,7 +136,7 @@ export default function Home() {
                     {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
                     <p className="text-sm text-gray-500">{game.short_description}</p>
                   </div>
-                </div>
+                </Link>
               ))
             )}
           </div>
