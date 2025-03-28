@@ -78,7 +78,7 @@ export default function GameDetails() {
           ) : (
             relatedGames.map((relatedGame) => (
               <SwiperSlide key={relatedGame.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
-                <Link href={`/game/${relatedGame.id}`} passHref>
+                <Link href={`/games/${relatedGame.id}`} >
                  
                     <img
                       src={relatedGame.thumbnail}
