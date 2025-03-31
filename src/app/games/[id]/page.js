@@ -7,11 +7,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
+import { useDispatch } from "react-redux";
+import { cartActions } from "@/lib/slices/cartSlice";
+
 
 export default function GameDetails() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [relatedGames, setRelatedGames] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch("/data/games.json")
@@ -25,11 +29,13 @@ export default function GameDetails() {
           setRelatedGames(sameGenreGames);
         }
       })
-      .catch((err) => console.error("Erreur lors de la récupération du jeu :", err));
+      .catch((err) => console.error("Erreur de récupération du jeu :", err));
   }, [id]);
 
-  if (!game) return <div className="text-center text-xl p-6 text-white">Chargement...</div>;
-
+  if (!game) return <div className="p-6 text-center text-xl text-white">Chargement...</div>;
+  const handleClick = () => {
+    dispatch(cartActions.addItem(game))
+  }
   return (
     <div className="container mx-auto p-6 flex flex-col items-center">
       <div className="flex flex-col mt-10 md:flex-row items-center bg-zinc-900 p-6 rounded-xl shadow-lg w-full max-w-4xl">
@@ -38,22 +44,21 @@ export default function GameDetails() {
           alt={game.title}
           className="w-full h-72 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
         />
-
         <div className="md:ml-8 mt-6 md:mt-0 flex flex-col justify-between w-full">
           <h1 className="text-4xl font-extrabold text-orange-500 mb-4">{game.title}</h1>
-          <p className="text-lg text-gray-300 font-semibold">{game.genre}</p>
-          <p className="text-gray-400 text-sm mb-2">{game.publisher}</p>
-          <p className="text-xl text-green-400 font-bold">{game.price}</p>
+          <p className="font-semibold text-lg text-gray-300">{game.genre}</p>
+          <p className="text-sm text-gray-400 mb-2">{game.publisher}</p>
+          <p className="font-bold text-xl text-green-400">{game.price}</p>
           <p className="mt-4 text-gray-300 leading-relaxed">{game.short_description}</p>
 
-          <button className="mt-6 px-5 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition self-start">
+          <button onClick={handleClick} className="mt-6 px-5 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition self-start">
             Acheter Maintenant
           </button>
         </div>
       </div>
 
       <section className="mt-16 w-full">
-        <h2 className="text-2xl font-bold text-center mb-6 text-orange-500">Jeux similaires</h2>
+        <h2 className="text-2xl text-orange-500 font-bold text-center mb-6">Jeux similaires</h2>
         <Swiper
           modules={[Navigation, Autoplay]}
           navigation
@@ -62,24 +67,19 @@ export default function GameDetails() {
           slidesPerView={1}
           spaceBetween={20}
           breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
           }}
           className="w-full mx-auto max-w-screen-xl"
         >
           {relatedGames.length === 0 ? (
             <SwiperSlide>
-              <div className="text-center text-xl text-gray-400">Aucun jeu similaire trouvé...</div>
+              <div className="text-xl text-gray-400 text-center">Aucun jeu similaire trouvé...</div>
             </SwiperSlide>
           ) : (
             relatedGames.map((relatedGame) => (
               <SwiperSlide key={relatedGame.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
-                <Link href={`/games/${relatedGame.id}`} >
-                 
+                <Link href={`/games/${relatedGame.id}`}>
                     <img
                       src={relatedGame.thumbnail}
                       alt={relatedGame.title}
@@ -94,7 +94,7 @@ export default function GameDetails() {
                       {relatedGame.publisher && <p className="text-sm text-gray-400">{relatedGame.publisher}</p>}
                       <p className="text-sm text-gray-500">{relatedGame.short_description}</p>
                     </div>
-                  
+                 
                 </Link>
               </SwiperSlide>
             ))

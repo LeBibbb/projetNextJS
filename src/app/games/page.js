@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-
 import { useEffect, useState } from "react";
 
 export default function GamesPage() {
@@ -38,7 +37,6 @@ export default function GamesPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-
         <select
           className="w-full sm:w-1/2 p-3 mt-15 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={selectedGenre}
@@ -60,29 +58,27 @@ export default function GamesPage() {
           </div>
         ) : (
           filteredGames.map((game) => (
-            <Link 
-                  key={game.id} 
-                  href={`/games/${game.id}`} 
-                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
-                >
-            
-            <div key={game.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg">
-              
-              <img
-                src={game.thumbnail}
-                alt={game.title}
-                className="w-full h-48 object-cover rounded-md"
-              />
-              <div className="mt-4">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-semibold">{game.title}</h2>
-                  <p className="text-lg font-bold text-green-400">{game.price}</p>
+            <Link
+              key={game.id}
+              href={`/games/${game.id}`}
+              className="transition-transform transform hover:scale-105 bg-zinc-800 p-4 rounded-lg shadow-lg text-white"
+            >
+              <div className="bg-zinc-800 p-4 rounded-lg shadow-lg">
+                <img
+                  src={game.thumbnail}
+                  alt={game.title}
+                  className="w-full h-48 object-cover rounded-md"
+                />
+                <div className="mt-4">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-semibold">{game.title}</h2>
+                    <p className="text-lg font-bold text-green-400">{game.price}</p>
+                  </div>
+                  <p className="text-sm text-orange-500">{game.genre}</p>
+                  {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
+                  <p className="text-sm text-gray-500">{game.short_description}</p>
                 </div>
-                <p className="text-sm text-orange-500">{game.genre}</p>
-                {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
-                <p className="text-sm text-gray-500">{game.short_description}</p>
               </div>
-            </div>
             </Link>
           ))
         )}
