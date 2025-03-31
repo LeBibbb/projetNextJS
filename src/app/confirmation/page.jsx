@@ -1,7 +1,9 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { cartActions } from "@/lib/slices/cartSlice"; 
+import { useRouter } from "next/navigation"; 
 
 const generateActivationKey = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -14,6 +16,8 @@ const generateActivationKey = () => {
 
 const Confirmation = () => {
   const cartItems = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
+  const router = useRouter(); 
   const [activationKeys, setActivationKeys] = useState([]);
 
   useEffect(() => {
@@ -27,6 +31,11 @@ const Confirmation = () => {
     (total, item) => total + item.price * item.quantity,
     0
   );
+
+  const handleReturnToHome = () => {
+    dispatch(cartActions.clearCart());
+    router.push("/");  
+  };
 
   return (
     <div className="min-h-screen bg-zinc-800 text-white flex justify-center items-center p-6">
@@ -73,6 +82,15 @@ const Confirmation = () => {
             </p>
           </>
         )}
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={handleReturnToHome}
+            className="py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition duration-300"
+          >
+            Retour à l'accueil
+          </button>
+        </div>
       </div>
     </div>
   );
