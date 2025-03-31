@@ -27,7 +27,7 @@ const Navbar = () => {
           >
             GAMES
           </Link>
-          <div onClick={handleVisible} className="text-lg font-semibold transition duration-300 hover:text-orange-300" >CART</div>
+          <div onClick={handleVisible} className="text-lg font-semibold transition duration-300 hover:text-orange-300 cursor-pointer" >CART</div>
 
           </div>
           
