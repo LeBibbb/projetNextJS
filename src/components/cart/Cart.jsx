@@ -44,14 +44,14 @@ const Cart = () => {
                 <div className="flex items-center border-2 border-white px-1 rounded-full space-x-2 ml-auto">
                   <button
                     onClick={() => handleRemoveItem(item.id)}
-                    className="text-2xl text-white"
+                    className="text-2xl text-white p-1"
                   >
                     -
                   </button>
-                  <p className="pt-1 text-white">{item.quantity}</p>
+                  <p className="pt-1 text-white p-1">{item.quantity}</p>
                   <button
                     onClick={() => handleAddItem(item.id)}
-                    className="text-2xl text-white"
+                    className="text-2xl text-white p-1"
                   >
                     +
                   </button>
