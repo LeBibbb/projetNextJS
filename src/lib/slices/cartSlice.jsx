@@ -10,9 +10,15 @@ const cartSlice = createSlice({
         toggleView(state) {
             state.isCartVisible = !state.isCartVisible;
         },
+        activateCart(state) {
+            state.isCartVisible = true;
+        },
+        deactivateCart(state) {
+            state.isCartVisible = false;
+        },
         addItem(state, action) {
             const newProduct = action.payload;
-            const exist = state.items.find((item) => item.id === newProduct.id); 
+            const exist = state.items.find((item) => item.id === newProduct.id);
 
             if (!exist) {
                 state.items.push({
@@ -39,8 +45,8 @@ const cartSlice = createSlice({
             }
         },
         clearCart(state) {
-            state.items = [];  
-          },
+            state.items = [];
+        },
     },
 });
 
