@@ -36,7 +36,6 @@ export default function GameDetails() {
       })
       .catch((err) => console.error("Erreur de récupération du jeu :", err));
 
-    // Vérifier si le jeu est déjà dans le panier
     if (cartItems.some((item) => item.id === id)) {
       setIsInCart(true); 
     }
@@ -46,7 +45,7 @@ export default function GameDetails() {
     if (!isInCart) { 
       setIsButtonClicked(true); 
       dispatch(cartActions.addItem(game)); 
-      dispatch(cartActions.activateCart()); // Afficher le panier lorsque l'élément est ajouté
+      dispatch(cartActions.activateCart()); 
 
       setIsInCart(true); 
       setTimeout(() => {
