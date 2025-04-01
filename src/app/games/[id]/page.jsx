@@ -10,7 +10,6 @@ import { Navigation, Autoplay } from "swiper/modules";
 import { useDispatch } from "react-redux";
 import { cartActions } from "@/lib/slices/cartSlice";
 
-
 export default function GameDetails() {
   const { id } = useParams();
   const [game, setGame] = useState(null);
@@ -18,7 +17,7 @@ export default function GameDetails() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch("/data/games.json")
+    fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
       .then((res) => res.json())
       .then((data) => {
         const foundGame = data.find((game) => game.id.toString() === id);
@@ -34,8 +33,9 @@ export default function GameDetails() {
 
   if (!game) return <div className="p-6 text-center text-xl text-white">Chargement...</div>;
   const handleClick = () => {
-    dispatch(cartActions.addItem(game))
-  }
+    dispatch(cartActions.addItem(game));
+  };
+
   return (
     <div className="container mx-auto p-6 flex flex-col items-center">
       <div className="flex flex-col mt-10 md:flex-row items-center bg-zinc-900 p-6 rounded-xl shadow-lg w-full max-w-4xl">
@@ -80,21 +80,20 @@ export default function GameDetails() {
             relatedGames.map((relatedGame) => (
               <SwiperSlide key={relatedGame.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
                 <Link href={`/games/${relatedGame.id}`}>
-                    <img
-                      src={relatedGame.thumbnail}
-                      alt={relatedGame.title}
-                      className="w-full h-48 object-cover rounded-md"
-                    />
-                    <div className="mt-4">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold">{relatedGame.title}</h3>
-                        <p className="text-lg font-bold text-green-400">{relatedGame.price}</p>
-                      </div>
-                      <p className="text-sm text-orange-500">{relatedGame.genre}</p>
-                      {relatedGame.publisher && <p className="text-sm text-gray-400">{relatedGame.publisher}</p>}
-                      <p className="text-sm text-gray-500">{relatedGame.short_description}</p>
+                  <img
+                    src={relatedGame.thumbnail}
+                    alt={relatedGame.title}
+                    className="w-full h-48 object-cover rounded-md"
+                  />
+                  <div className="mt-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-semibold">{relatedGame.title}</h3>
+                      <p className="text-lg font-bold text-green-400">{relatedGame.price}</p>
                     </div>
-                 
+                    <p className="text-sm text-orange-500">{relatedGame.genre}</p>
+                    {relatedGame.publisher && <p className="text-sm text-gray-400">{relatedGame.publisher}</p>}
+                    <p className="text-sm text-gray-500">{relatedGame.short_description}</p>
+                  </div>
                 </Link>
               </SwiperSlide>
             ))

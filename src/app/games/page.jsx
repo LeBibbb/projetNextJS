@@ -1,44 +1,53 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/games.json")
+    fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
       .then((response) => response.json())
       .then((data) => {
         setGames(data);
+        setLoading(false);
       })
-      .catch((err) => console.error("Erreur lors de la récupération des données :", err));
+      .catch((err) => {
+        console.error("Erreur lors de la récupération des données :", err);
+        setLoading(false);
+      });
   }, []);
 
-  const genres = Array.from(new Set(games.map((game) => game.genre))).sort();
+  const genres = useMemo(() => {
+    return Array.from(new Set(games.map((game) => game.genre))).sort();
+  }, [games]);
 
-  const filteredGames = games.filter(
-    (game) =>
-      (game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        game.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (game.publisher && game.publisher.toLowerCase().includes(searchTerm.toLowerCase()))) &&
-      (selectedGenre === "" || game.genre === selectedGenre)
-  );
+  const filteredGames = useMemo(() => {
+    return games.filter(
+      (game) =>
+        (game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          game.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (game.publisher && game.publisher.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+        (selectedGenre === "" || game.genre === selectedGenre)
+    );
+  }, [games, searchTerm, selectedGenre]);
 
   return (
     <div className="container mx-auto p-6">
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 mb-6">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4 mb-6 mt-15">
         <input
           type="text"
           placeholder="Rechercher par nom ou studio..."
-          className="w-full sm:w-1/2 p-2.5 mt-15 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full sm:w-1/2 p-2.5 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className="w-full sm:w-1/2 p-3 mt-15 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className="w-full sm:w-1/2 p-3 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -51,13 +60,13 @@ export default function GamesPage() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredGames.length === 0 ? (
-          <div className="col-span-3 text-center text-xl text-gray-400">
-            Aucun jeu trouvé...
-          </div>
-        ) : (
-          filteredGames.map((game) => (
+      {loading ? (
+        <div className="text-center text-xl text-gray-400">Chargement des jeux...</div>
+      ) : filteredGames.length === 0 ? (
+        <div className="col-span-3 text-center text-xl text-gray-400">Aucun jeu trouvé...</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredGames.map((game) => (
             <Link
               key={game.id}
               href={`/games/${game.id}`}
@@ -80,9 +89,9 @@ export default function GamesPage() {
                 </div>
               </div>
             </Link>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
