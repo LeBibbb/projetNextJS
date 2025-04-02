@@ -11,12 +11,26 @@ const Navbar = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [darkMode, setDarkMode] = useState(
+    typeof window !== "undefined" ? localStorage.getItem("theme") === "dark" : false
+  );
+
   const handleVisible = () => {
     dispatch(cartActions.toggleView());
   };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("theme", newMode ? "dark" : "light");
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   return (
@@ -32,7 +46,6 @@ const Navbar = () => {
           GAMING
         </Link>
 
-        {/* Menu burger */}
         <div className="lg:hidden">
           <button onClick={toggleMenu} className="text-white focus:outline-none">
             <svg
@@ -67,11 +80,16 @@ const Navbar = () => {
             >
               CART
             </div>
+            <button
+            onClick={toggleDarkMode}
+            className="x rounded-md bg-gray-200 text-gray-900 dark:bg-orange-600 dark:text-white transition duration-300"
+          >
+            {darkMode ? "☀️" : "🌙"}
+          </button>
           </div>
         </div>
       </div>
 
-      {/* Menu burger (Mobile) */}
       {menuOpen && (
         <div className="lg:hidden bg-orange-600 text-white p-4 absolute top-16 left-0 w-full">
           <div className="flex flex-col space-y-4">
@@ -91,6 +109,15 @@ const Navbar = () => {
             >
               CART
             </div>
+            <button
+              onClick={() => {
+                toggleDarkMode();
+                toggleMenu();
+              }}
+              className="p-2 rounded-md bg-gray-200 text-gray-900 dark:bg-zinc-700 dark:text-white transition duration-300"
+            >
+              {darkMode ? "☀️ Mode Clair" : "🌙 Mode Sombre"}
+            </button>
           </div>
         </div>
       )}

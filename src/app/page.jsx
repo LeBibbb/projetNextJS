@@ -54,7 +54,10 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Bienvenue sur LATENCE GAMING</h1>
+      <header className="text-center mb-8 mt-15 " style={{ backgroundImage: "url('./public/jeux1.webp')" }} >
+        <h1 className="text-4xl font-bold text-orange-500">LATENCE GAMING</h1>
+        <p className="text-lg text-gray-400 mt-2">Découvrez les meilleurs jeux à prix compétitifs, spécialement sélectionnés pour vous !</p>
+      </header>
 
       {loading ? (
         <p className="text-center text-xl text-gray-400">Chargement des jeux...</p>
@@ -62,7 +65,6 @@ export default function Home() {
         <>
           {games.length > 0 && games[currentIndex] && (
             <div className="relative w-full mx-auto max-w-screen-lg">
-              
               <div className="relative transition-all duration-500 ease-in-out transform">
                   <Link href={`/games/${games[currentIndex].id}`} className="block w-full h-full">
                     <img
