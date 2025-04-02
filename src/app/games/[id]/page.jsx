@@ -109,14 +109,14 @@ export default function GameDetails() {
         >
           {relatedGames.length === 0 ? (
             <SwiperSlide>
-              <div className="text-xl text-gray-400 text-center">Aucun jeu similaire trouvé...</div>
+              <div className="text-xl  text-gray-400 text-center">Aucun jeu similaire trouvé...</div>
             </SwiperSlide>
           ) : (
             relatedGames.map((relatedGame) => (
               <SwiperSlide
                 key={relatedGame.id}
                 className={`p-4 rounded-lg shadow-lg ${
-                  darkMode ? "bg-white-800" : "bg-orange-500"
+                  darkMode ? "bg-zinc-800" : "bg-orange-500"
                 }`}
               >
                 <Link href={`/games/${relatedGame.id}`}>
