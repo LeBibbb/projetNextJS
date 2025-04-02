@@ -2,8 +2,8 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { cartActions } from "@/lib/slices/cartSlice"; 
-import { useRouter } from "next/navigation"; 
+import { cartActions } from "@/lib/slices/cartSlice";
+import { useRouter } from "next/navigation";
 
 const generateActivationKey = () => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -16,8 +16,9 @@ const generateActivationKey = () => {
 
 const Confirmation = () => {
   const cartItems = useSelector((state) => state.cart.items);
+  const darkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
-  const router = useRouter(); 
+  const router = useRouter();
   const [activationKeys, setActivationKeys] = useState([]);
 
   useEffect(() => {
@@ -38,9 +39,21 @@ const Confirmation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-800 text-white flex justify-center items-center p-6">
-      <div className="w-11/12 sm:w-7/10 lg:w-7/10 xl:w-7/10 bg-zinc-700 p-6 rounded-lg">
-        <h2 className="text-2xl font-semibold mb-6 text-orange-600">
+    <div
+      className={`min-h-screen flex justify-center items-center p-6 ${
+        darkMode ? "bg-zinc-800 text-white" : "bg-white text-black"
+      }`}
+    >
+      <div
+        className={`w-11/12 sm:w-7/10 lg:w-7/10 xl:w-7/10 p-6 rounded-lg ${
+          darkMode ? "bg-zinc-700" : "bg-orange-500"
+        }`}
+      >
+        <h2
+          className={`text-2xl font-semibold mb-6 ${
+            darkMode ? "text-orange-600" : "text-white"
+          }`}
+        >
           Confirmation de commande
         </h2>
         {cartItems.length === 0 ? (
@@ -68,7 +81,13 @@ const Confirmation = () => {
                         <tr key={`${index}-${i}`} className="border-b">
                           <td className="py-2 px-4">{item.title}</td>
                           <td className="py-2 px-4">{item.price} €</td>
-                          <td className="py-2 px-4 text-orange-600">{key}</td>
+                          <td
+                            className={`py-2 px-4 ${
+                              darkMode ? "text-orange-600" : "text-white"
+                            }`}
+                          >
+                            {key}
+                          </td>
                         </tr>
                       ))}
                     </>
@@ -86,7 +105,9 @@ const Confirmation = () => {
         <div className="mt-6 text-center">
           <button
             onClick={handleReturnToHome}
-            className="py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition duration-300"
+            className={`py-2 px-4 ${
+              darkMode ? "bg-orange-600" : "bg-orange-600"
+            } text-white rounded-lg hover:bg-orange-500 transition duration-300`}
           >
             Retour à l'accueil
           </button>

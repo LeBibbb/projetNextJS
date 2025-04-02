@@ -19,6 +19,7 @@ export default function GameDetails() {
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items); 
+  const darkMode = useSelector((state) => state.theme.darkMode); 
 
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
@@ -57,15 +58,23 @@ export default function GameDetails() {
   if (!game) return <div className="p-6 text-center text-xl text-white">Chargement...</div>;
 
   return (
-    <div className="container mx-auto p-6 flex flex-col items-center">
-      <div className="flex flex-col mt-10 md:flex-row items-center bg-zinc-900 p-6 rounded-xl shadow-lg w-full max-w-4xl">
+    <div className=" mt-15 container mx-auto p-6 flex flex-col items-center">
+      <div
+        className={`flex flex-col mt-10 md:flex-row items-center p-6 rounded-xl shadow-lg w-full max-w-4xl ${
+          darkMode ? "bg-zinc-800" : "bg-orange-500"
+        }`}
+      >
         <img
           src={game.thumbnail}
           alt={game.title}
           className="w-full h-72 object-cover rounded-lg shadow-md transition-transform duration-300 hover:scale-105"
         />
-        <div className="md:ml-8 mt-6 md:mt-0 flex flex-col justify-between w-full">
-          <h1 className="text-4xl font-extrabold text-orange-500 mb-4">{game.title}</h1>
+        <div
+          className={`md:ml-8 mt-6 md:mt-0 flex flex-col justify-between w-full ${
+            darkMode ? "text-white" : "text-white" 
+          }`}
+        >
+          <h1 className="text-4xl font-extrabold mb-4">{game.title}</h1>
           <p className="font-semibold text-lg text-gray-300">{game.genre}</p>
           <p className="text-sm text-gray-400 mb-2">{game.publisher}</p>
           <p className="font-bold text-xl text-green-400">{game.price}</p>
@@ -84,7 +93,7 @@ export default function GameDetails() {
       </div>
 
       <section className="mt-16 w-full">
-        <h2 className="text-2xl text-orange-500 font-bold text-center mb-6">Jeux similaires</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-orange-500">Jeux similaires</h2>
         <Swiper
           modules={[Navigation, Autoplay]}
           navigation
@@ -104,7 +113,12 @@ export default function GameDetails() {
             </SwiperSlide>
           ) : (
             relatedGames.map((relatedGame) => (
-              <SwiperSlide key={relatedGame.id} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white">
+              <SwiperSlide
+                key={relatedGame.id}
+                className={`p-4 rounded-lg shadow-lg ${
+                  darkMode ? "bg-white-800" : "bg-orange-500"
+                }`}
+              >
                 <Link href={`/games/${relatedGame.id}`}>
                   <img
                     src={relatedGame.thumbnail}

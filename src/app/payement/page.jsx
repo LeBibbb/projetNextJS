@@ -6,6 +6,7 @@ import Link from "next/link";
 
 const Payement = () => {
   const cartItems = useSelector((state) => state.cart.items);
+  const darkMode = useSelector((state) => state.theme.darkMode); 
   const [selectedPayment, setSelectedPayment] = useState(null);
 
   const totalPrice = cartItems.reduce(
@@ -18,7 +19,11 @@ const Payement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-800 text-white flex justify-center items-center p-6">
+    <div
+      className={`min-h-screen flex justify-center items-center p-6 ${
+        darkMode ? "bg-zinc-800 text-white" : "bg-white text-black"
+      }`}
+    >
       <div className="w-11/12 sm:w-7/10 lg:w-7/10 xl:w-7/10 flex">
         <div className="w-1/2 pr-4">
           <h2 className="text-xl font-semibold mb-4">Choisissez votre moyen de paiement</h2>
@@ -53,13 +58,11 @@ const Payement = () => {
             ))}
           </ul>
 
-
           <div className="flex justify-between text-lg font-semibold mb-4">
             <p>Total à payer</p>
             <p>{totalPrice.toFixed(2)} €</p>
           </div>
 
-  
           <Link href="/confirmation">
             <button
               className="w-full py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-500 transition duration-300"
