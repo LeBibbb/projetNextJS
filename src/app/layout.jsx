@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <StoreProvider>
-          <ClientLayout>{children}</ClientLayout> {/* ✅ Utilisation du composant Client */}
+          <ClientLayout>{children}</ClientLayout>
         </StoreProvider>
       </body>
     </html>

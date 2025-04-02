@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
+import { useSelector } from "react-redux"; // Import de useSelector
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [loading, setLoading] = useState(true);
+
+  // Récupération de l'état darkMode dans Redux
+  const darkMode = useSelector((state) => state.theme.darkMode); // Accès à l'état 'darkMode'
 
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
@@ -42,12 +46,12 @@ export default function GamesPage() {
         <input
           type="text"
           placeholder="Rechercher par nom ou studio..."
-          className="w-full sm:w-1/2 p-2.5 text-white bg-zinc-700 border border-zinc-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className={`w-full sm:w-1/2 p-2.5 border rounded focus:outline-none focus:ring-2 ${darkMode ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500" : "bg-white text-black border-gray-300 focus:ring-orange-500"}`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className="w-full sm:w-1/2 p-3 bg-zinc-700 border border-zinc-600 text-white rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+          className={`w-full sm:w-1/2 p-3 border rounded focus:outline-none focus:ring-2 ${darkMode ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500" : "bg-white text-black border-gray-300 focus:ring-orange-500"}`}
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -70,9 +74,9 @@ export default function GamesPage() {
             <Link
               key={game.id}
               href={`/games/${game.id}`}
-              className="transition-transform transform hover:scale-105 bg-zinc-800 p-4 rounded-lg shadow-lg text-white"
+              className={`transition-transform transform hover:scale-105 p-4 rounded-lg ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}
             >
-              <div className="bg-zinc-800 p-4 rounded-lg shadow-lg">
+              <div className={`p-4 rounded-lg ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}>
                 <img
                   src={game.thumbnail}
                   alt={game.title}
@@ -80,12 +84,12 @@ export default function GamesPage() {
                 />
                 <div className="mt-4">
                   <div className="flex justify-between items-center">
-                    <h2 className="text-lg font-semibold">{game.title}</h2>
-                    <p className="text-lg font-bold text-green-400">{game.price}</p>
+                    <h2 className={`text-lg font-semibold ${darkMode ? "text-white" : "text-white"}`}>{game.title}</h2>
+                    <p className={`text-lg font-bold ${darkMode ? "text-green-400" : "text-white"}`}>{game.price}</p>
                   </div>
-                  <p className="text-sm text-orange-500">{game.genre}</p>
-                  {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
-                  <p className="text-sm text-gray-500">{game.short_description}</p>
+                  <p className={`text-sm ${darkMode ? "text-orange-500" : "text-white"}`}>{game.genre}</p>
+                  {game.publisher && <p className={`text-sm ${darkMode ? "text-gray-400" : "text-white"}`}>{game.publisher}</p>}
+                  <p className={`text-sm ${darkMode ? "text-gray-500" : "text-white"}`}>{game.short_description}</p>
                 </div>
               </div>
             </Link>

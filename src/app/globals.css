@@ -3,13 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-
-
-
-  --swiper-pagination-color:#ff7300 ;
+  --swiper-pagination-color: #ff7300;
   --swiper-pagination-bullet-inactive-color: #ff7300;
-  --swiper-pagination-padding:#ff7300 ;
-
+  --swiper-pagination-padding: #ff7300;
 }
 .swiper-button-next,
 .swiper-button-prev {
@@ -23,9 +19,26 @@
   }
 }
 
+
+
 body {
-  background: #171717;
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #171717; 
+  transition: background-color 0.3s, color 0.3s;
 }
 
+body.dark {
+  background-color: #121212; 
+  color: #ffffff;
+}
+
+@layer base {
+  body {
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dark body {
+    background-color: #121212;  
+    color: white;  
+  }
+}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux"; // Import de useSelector
 
 export default function Home() {
   const [games, setGames] = useState([]);
@@ -9,6 +10,9 @@ export default function Home() {
   const [cheapGames, setCheapGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0); // Index de l'image actuelle dans le carousel
+
+  // Récupération de l'état darkMode dans Redux
+  const darkMode = useSelector((state) => state.theme.darkMode); // Accès à l'état 'darkMode'
 
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
@@ -38,7 +42,6 @@ export default function Home() {
       });
   }, []);
 
-
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % games.length); 
   };
@@ -53,14 +56,16 @@ export default function Home() {
   }, [games]);
 
   return (
-    <div className="container mx-auto p-6">
-      <header className="text-center mb-8 mt-15 " style={{ backgroundImage: "url('./public/jeux1.webp')" }} >
-        <h1 className="text-4xl font-bold text-orange-500">LATENCE GAMING</h1>
-        <p className="text-lg text-gray-400 mt-2">Découvrez les meilleurs jeux à prix compétitifs, spécialement sélectionnés pour vous !</p>
+    <div className={`container mx-auto p-6 ${darkMode ? "bg-zinc-900 text-white" : "bg-white text-black"}`}>
+      <header className="text-center mb-8 mt-15" style={{ backgroundImage: "url('./public/jeux1.webp')" }}>
+        <h1 className={`text-4xl font-bold ${darkMode ? "text-orange-500" : "text-orange-600"}`}>LATENCE GAMING</h1>
+        <p className={`text-lg mt-2 ${darkMode ? "text-gray-400" : "text-gray-700"}`}>
+          Découvrez les meilleurs jeux à prix compétitifs, spécialement sélectionnés pour vous !
+        </p>
       </header>
 
       {loading ? (
-        <p className="text-center text-xl text-gray-400">Chargement des jeux...</p>
+        <p className={`text-center text-xl ${darkMode ? "text-gray-400" : "text-gray-700"}`}>Chargement des jeux...</p>
       ) : (
         <>
           {games.length > 0 && games[currentIndex] && (
@@ -72,8 +77,8 @@ export default function Home() {
                       alt={games[currentIndex].title}
                       className="w-full h-full object-cover rounded-lg"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 bg-zinc-800 bg-opacity-50 p-5 text-white">
-                      <div className="flex justify-between items-center">
+<div className={`absolute bottom-0 left-0 right-0 ${darkMode ? 'bg-zinc-800 bg-opacity-50 text-white' : 'bg-orange-500 bg-opacity-80 text-white'} p-5`}>
+<div className="flex justify-between items-center">
                         <div>
                           <h2 className="text-xl font-bold">{games[currentIndex].title}</h2>
                           <p className="text-sm">{games[currentIndex].genre}</p>
@@ -99,13 +104,13 @@ export default function Home() {
           )}
 
           <section className="mt-12">
-            <h2 className="text-2xl font-bold text-center mb-6 text-orange-500">Meilleures Ventes</h2>
+            <h2 className={`text-2xl font-bold text-center mb-6 ${darkMode ? "text-orange-500" : "text-orange-600"}`}>Meilleures Ventes</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {bestSellers.map((game) => (
                 <Link
                   key={game.id}
                   href={`/games/${game.id}`}
-                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
+                  className={`p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105 ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}
                 >
                   <img
                     src={game.thumbnail}
@@ -117,9 +122,9 @@ export default function Home() {
                       <h3 className="text-lg font-semibold">{game.title}</h3>
                       <p className="text-lg font-bold text-green-400">{game.price}</p>
                     </div>
-                    <p className="text-sm text-orange-500">{game.genre}</p>
-                    {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
-                    <p className="text-sm text-gray-500">{game.short_description}</p>
+                    <p className={`text-sm ${darkMode ? "text-orange-500" : "text-white"}`}>{game.genre}</p>
+                    {game.publisher && <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-700"}`}>{game.publisher}</p>}
+                    <p className={`text-sm ${darkMode ? "text-gray-500" : "text-gray-800"}`}>{game.short_description}</p>
                   </div>
                 </Link>
               ))}
@@ -127,13 +132,13 @@ export default function Home() {
           </section>
 
           <section className="mt-12">
-            <h2 className="text-2xl font-bold text-center mb-6 text-green-500">Jeux à moins de 15€</h2>
+            <h2 className={`text-2xl font-bold text-center mb-6 ${darkMode ? "text-green-500" : "text-green-600"}`}>Jeux à moins de 15€</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {cheapGames.map((game) => (
                 <Link
                   key={game.id}
                   href={`/games/${game.id}`}
-                  className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105"
+                  className={`p-4 rounded-lg shadow-lg text-white transition-transform transform hover:scale-105 ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}
                 >
                   <img
                     src={game.thumbnail}
@@ -145,9 +150,9 @@ export default function Home() {
                       <h3 className="text-lg font-semibold">{game.title}</h3>
                       <p className="text-lg font-bold text-green-400">{game.price}</p>
                     </div>
-                    <p className="text-sm text-orange-500">{game.genre}</p>
-                    {game.publisher && <p className="text-sm text-gray-400">{game.publisher}</p>}
-                    <p className="text-sm text-gray-500">{game.short_description}</p>
+                    <p className={`text-sm ${darkMode ? "text-orange-500" : "text-white"}`}>{game.genre}</p>
+                    {game.publisher && <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-700"}`}>{game.publisher}</p>}
+                    <p className={`text-sm ${darkMode ? "text-gray-500" : "text-gray-800"}`}>{game.short_description}</p>
                   </div>
                 </Link>
               ))}

@@ -2,18 +2,15 @@
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "@/lib/slices/cartSlice";
-import { useState } from "react";
+import { toggleDarkMode } from "@/lib/slices/themeSlice";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const cartLength = useSelector((state) => state.cart.items);
-  console.log(cartLength);
+  const darkMode = useSelector((state) => state.theme.darkMode);
 
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const [darkMode, setDarkMode] = useState(
-    typeof window !== "undefined" ? localStorage.getItem("theme") === "dark" : false
-  );
 
   const handleVisible = () => {
     dispatch(cartActions.toggleView());
@@ -22,16 +19,18 @@ const Navbar = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem("theme", newMode ? "dark" : "light");
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+
+  const toggleTheme = () => {
+    dispatch(toggleDarkMode()); 
   };
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   return (
     <nav className="z-50 bg-orange-600 text-white h-16 shadow-lg fixed top-0 left-0 w-full flex items-center">
@@ -81,11 +80,11 @@ const Navbar = () => {
               CART
             </div>
             <button
-            onClick={toggleDarkMode}
-            className="x rounded-md bg-gray-200 text-gray-900 dark:bg-orange-600 dark:text-white transition duration-300"
-          >
-            {darkMode ? "☀️" : "🌙"}
-          </button>
+              onClick={toggleTheme} 
+              className="text-lg font-semibold transition duration-300 hover:text-orange-300 cursor-pointer"
+            >
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </button>
           </div>
         </div>
       </div>
@@ -110,13 +109,10 @@ const Navbar = () => {
               CART
             </div>
             <button
-              onClick={() => {
-                toggleDarkMode();
-                toggleMenu();
-              }}
-              className="p-2 rounded-md bg-gray-200 text-gray-900 dark:bg-zinc-700 dark:text-white transition duration-300"
+              onClick={toggleTheme} 
+              className="text-lg font-semibold transition duration-300 hover:text-orange-300 cursor-pointer"
             >
-              {darkMode ? "☀️ Mode Clair" : "🌙 Mode Sombre"}
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
             </button>
           </div>
         </div>
