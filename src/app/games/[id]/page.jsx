@@ -27,7 +27,7 @@ export default function GameDetails() {
       .then((data) => {
         const foundGame = data.find((game) => game.id.toString() === id);
         setGame(foundGame);
-
+        //trouver les jeux du meme genre
         if (foundGame) {
           const sameGenreGames = data.filter(
             (g) => g.genre === foundGame.genre && g.id !== foundGame.id
@@ -42,6 +42,8 @@ export default function GameDetails() {
     }
   }, [id, cartItems]);
 
+
+  //bug a regler quand dans ke cart on met litem a  on peut plus cliquer
   const handleClick = () => {
     if (!isInCart) { 
       setIsButtonClicked(true); 

@@ -13,6 +13,7 @@ export default function Home() {
 
   const darkMode = useSelector((state) => state.theme.darkMode);
 
+  //recup des jeux de lapi
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
       .then((response) => {
@@ -21,10 +22,13 @@ export default function Home() {
         }
         return response.json();
       })
+      //MELANGE DE LAPI
       .then((data) => {
         const shuffled = data.sort(() => 0.5 - Math.random());
+        //selection des  premiers jeu
         setGames(shuffled.slice(0, 5));
 
+        //les 3 meilleures ventes
         const bestSellersData = data
           .filter((game) =>
             ["Valorant", "League of Legends", "Call Of Duty: Warzone"].includes(
@@ -34,6 +38,7 @@ export default function Home() {
           .slice(0, 3);
         setBestSellers(bestSellersData);
 
+        // jeux a moins de 15 € aléatoire
         const cheapGamesData = data.filter(
           (game) => parseFloat(game.price.replace("€", "").trim()) < 15
         );
@@ -86,17 +91,18 @@ export default function Home() {
             darkMode ? "text-gray-400" : "text-gray-700"
           }`}
         >
-          Découvrez les meilleurs jeux à prix compétitifs, spécialement
-          sélectionnés pour vous !
+          Instant Gaming mais en mieux
         </p>
       </header>
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500"></div>
         </div>
       )  : (
         <>
+
+        {/* carousel */}
           {games.length > 0 && games[currentIndex] && (
             <div className="relative w-full mx-auto max-w-screen-lg">
               <div className="relative transition-all duration-500 ease-in-out transform">

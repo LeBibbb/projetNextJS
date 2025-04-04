@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux"; // Import de useSelector
+import { useSelector } from "react-redux";
 
 export default function GamesPage() {
   const [games, setGames] = useState([]);
@@ -10,9 +10,8 @@ export default function GamesPage() {
   const [selectedGenre, setSelectedGenre] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Récupération de l'état darkMode dans Redux
-  const darkMode = useSelector((state) => state.theme.darkMode); // Accès à l'état 'darkMode'
-
+  const darkMode = useSelector((state) => state.theme.darkMode); 
+  // recup données
   useEffect(() => {
     fetch("https://raw.githubusercontent.com/LeBibbb/monAPI/main/games.json")
       .then((response) => response.json())
@@ -29,7 +28,7 @@ export default function GamesPage() {
   const genres = useMemo(() => {
     return Array.from(new Set(games.map((game) => game.genre))).sort();
   }, [games]);
-
+  // usememo ca sert a memoriser une valeur pour cpas recalculer a chaque fois
   const filteredGames = useMemo(() => {
     return games.filter(
       (game) =>
@@ -75,7 +74,7 @@ export default function GamesPage() {
 
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-orange-500"></div>
         </div>
       ) : filteredGames.length === 0 ? (
         <div className="col-span-3 text-center text-xl text-gray-400">

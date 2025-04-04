@@ -8,7 +8,7 @@ const Payement = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const darkMode = useSelector((state) => state.theme.darkMode); 
   const [selectedPayment, setSelectedPayment] = useState(null);
-
+  //calcul prix total
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
