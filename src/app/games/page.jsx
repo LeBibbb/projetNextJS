@@ -35,7 +35,8 @@ export default function GamesPage() {
       (game) =>
         (game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           game.genre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (game.publisher && game.publisher.toLowerCase().includes(searchTerm.toLowerCase()))) &&
+          (game.publisher &&
+            game.publisher.toLowerCase().includes(searchTerm.toLowerCase()))) &&
         (selectedGenre === "" || game.genre === selectedGenre)
     );
   }, [games, searchTerm, selectedGenre]);
@@ -46,12 +47,20 @@ export default function GamesPage() {
         <input
           type="text"
           placeholder="Rechercher par nom ou studio..."
-          className={`w-full sm:w-1/2 p-2.5 border rounded focus:outline-none focus:ring-2 ${darkMode ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500" : "bg-white text-black border-gray-300 focus:ring-orange-500"}`}
+          className={`w-full sm:w-1/2 p-2.5 border rounded focus:outline-none focus:ring-2 ${
+            darkMode
+              ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500"
+              : "bg-white text-black border-gray-300 focus:ring-orange-500"
+          }`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className={`w-full sm:w-1/2 p-3 border rounded focus:outline-none focus:ring-2 ${darkMode ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500" : "bg-white text-black border-gray-300 focus:ring-orange-500"}`}
+          className={`w-full sm:w-1/2 p-3 border rounded focus:outline-none focus:ring-2 ${
+            darkMode
+              ? "bg-zinc-700 text-white border-zinc-600 focus:ring-orange-500"
+              : "bg-white text-black border-gray-300 focus:ring-orange-500"
+          }`}
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
         >
@@ -65,18 +74,28 @@ export default function GamesPage() {
       </div>
 
       {loading ? (
-        <div className="text-center text-xl text-gray-400">Chargement des jeux...</div>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+        </div>
       ) : filteredGames.length === 0 ? (
-        <div className="col-span-3 text-center text-xl text-gray-400">Aucun jeu trouvé...</div>
+        <div className="col-span-3 text-center text-xl text-gray-400">
+          Aucun jeu trouvé...
+        </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredGames.map((game) => (
             <Link
               key={game.id}
               href={`/games/${game.id}`}
-              className={`transition-transform transform hover:scale-105 p-4 rounded-lg ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}
+              className={`transition-transform transform hover:scale-105 p-4 rounded-lg ${
+                darkMode ? "bg-zinc-800" : "bg-orange-500"
+              }`}
             >
-              <div className={`p-4 rounded-lg ${darkMode ? "bg-zinc-800" : "bg-orange-500"}`}>
+              <div
+                className={`p-4 rounded-lg ${
+                  darkMode ? "bg-zinc-800" : "bg-orange-500"
+                }`}
+              >
                 <img
                   src={game.thumbnail}
                   alt={game.title}
@@ -84,12 +103,44 @@ export default function GamesPage() {
                 />
                 <div className="mt-4">
                   <div className="flex justify-between items-center">
-                    <h2 className={`text-lg font-semibold ${darkMode ? "text-white" : "text-white"}`}>{game.title}</h2>
-                    <p className={`text-lg font-bold ${darkMode ? "text-green-400" : "text-white"}`}>{game.price}</p>
+                    <h2
+                      className={`text-lg font-semibold ${
+                        darkMode ? "text-white" : "text-white"
+                      }`}
+                    >
+                      {game.title}
+                    </h2>
+                    <p
+                      className={`text-lg font-bold ${
+                        darkMode ? "text-green-400" : "text-white"
+                      }`}
+                    >
+                      {game.price}
+                    </p>
                   </div>
-                  <p className={`text-sm ${darkMode ? "text-orange-500" : "text-white"}`}>{game.genre}</p>
-                  {game.publisher && <p className={`text-sm ${darkMode ? "text-gray-400" : "text-white"}`}>{game.publisher}</p>}
-                  <p className={`text-sm ${darkMode ? "text-gray-500" : "text-white"}`}>{game.short_description}</p>
+                  <p
+                    className={`text-sm ${
+                      darkMode ? "text-orange-500" : "text-white"
+                    }`}
+                  >
+                    {game.genre}
+                  </p>
+                  {game.publisher && (
+                    <p
+                      className={`text-sm ${
+                        darkMode ? "text-gray-400" : "text-white"
+                      }`}
+                    >
+                      {game.publisher}
+                    </p>
+                  )}
+                  <p
+                    className={`text-sm ${
+                      darkMode ? "text-gray-500" : "text-white"
+                    }`}
+                  >
+                    {game.short_description}
+                  </p>
                 </div>
               </div>
             </Link>

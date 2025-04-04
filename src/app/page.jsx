@@ -92,14 +92,10 @@ export default function Home() {
       </header>
 
       {loading ? (
-        <p
-          className={`text-center text-xl ${
-            darkMode ? "text-gray-400" : "text-gray-700"
-          }`}
-        >
-          Chargement des jeux...
-        </p>
-      ) : (
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+        </div>
+      )  : (
         <>
           {games.length > 0 && games[currentIndex] && (
             <div className="relative w-full mx-auto max-w-screen-lg">
