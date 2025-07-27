@@ -1,4 +1,4 @@
-```markdown
+
 # 🎮 LATENCE GAMING - Catalogue de jeux vidéo
 
 **LATENCE GAMING** est une application web moderne développée avec Next.js, React et Redux Toolkit.  
@@ -37,7 +37,3 @@ Offrir une expérience fluide pour parcourir des jeux vidéo, ajouter au panier,
 - Installer les dépendances avec `npm install` ou `yarn`  
 - Lancer le serveur en mode développement `npm run dev` ou `yarn dev`  
 - Ouvrir `http://localhost:3000` dans ton navigateur
-
----
-
-```
